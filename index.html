@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fff0f5">
+<title>For Fay 💗 | From Clint</title>
+<style>
+:root {
+  --pink: #fff0f5;
+  --rose: #e85d83;
+  --dark: #843650;
+  --text: #513342;
+  --muted: #997786;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, #ffd9e6, transparent 40%),
+    linear-gradient(145deg, #fff8fa, #ffeaf2);
+}
+button { font: inherit; cursor: pointer; }
+.app {
+  width: min(100% - 28px, 560px);
+  margin: auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+header, footer { text-align: center; }
+header {
+  color: var(--dark);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 8px 0 22px;
+}
+main { flex: 1; display: grid; place-items: center; }
+.card {
+  width: 100%;
+  background: #ffffffdf;
+  border: 1px solid white;
+  border-radius: 28px;
+  padding: 27px 20px;
+  text-align: center;
+  box-shadow: 0 18px 55px #a63f6418;
+  animation: appear .35s ease;
+}
+@keyframes appear {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.heart {
+  width: 105px;
+  height: 105px;
+  display: grid;
+  place-items: center;
+  margin: 5px auto 20px;
+  border-radius: 32px;
+  background: #ffe2eb;
+  font-size: 52px;
+  animation: pulse 1.7s infinite;
+}
+@keyframes pulse {
+  50% { transform: scale(1.06) rotate(-3deg); }
+}
+.eyebrow {
+  color: var(--rose);
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+h1 {
+  font-size: clamp(35px, 9vw, 51px);
+  letter-spacing: -2px;
+  line-height: 1.08;
+  margin: 10px 0 14px;
+  color: #642c45;
+}
+h2 { color: #642c45; line-height: 1.2; }
+p { line-height: 1.75; }
+.subtitle { color: var(--muted); margin-bottom: 23px; }
+.primary, .secondary {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 15px;
+  padding: 15px;
+  font-weight: 800;
+}
+.primary {
+  color: white;
+  background: linear-gradient(135deg, #f07da0, #d94775);
+  box-shadow: 0 8px 20px #d9477530;
+}
+.primary:disabled { opacity: .45; cursor: not-allowed; }
+.secondary {
+  color: var(--dark);
+  background: #fff0f5;
+  border: 1px solid #f4cfdb;
+  margin-top: 10px;
+}
+.choice {
+  width: 100%;
+  text-align: left;
+  background: #fff9fb;
+  color: var(--text);
+  border: 1px solid #f2d6e0;
+  padding: 14px;
+  border-radius: 14px;
+  margin: 5px 0;
+  line-height: 1.45;
+}
+.choice.correct { background: #effaf2; border-color: #80bd96; }
+.choice.wrong { background: #fff0f0; border-color: #e8a2a2; }
+.choice:disabled { cursor: default; }
+#feedback { color: var(--muted); min-height: 44px; font-size: 14px; }
+.stats {
+  display: inline-block;
+  border-radius: 30px;
+  background: #fff0f5;
+  color: var(--dark);
+  padding: 8px 13px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.progress {
+  height: 6px;
+  border-radius: 20px;
+  background: #f4d8e2;
+  margin: 14px 0 23px;
+  overflow: hidden;
+}
+#bar {
+  width: 0;
+  height: 100%;
+  background: var(--rose);
+  transition: width .3s;
+}
+.note { font-size: 18px; line-height: 1.9; white-space: pre-line; }
+.paper {
+  text-align: left;
+  border: 1px solid #f2d8d0;
+  background: #fffaf6;
+  border-radius: 17px;
+  padding: 20px;
+}
+.paper p { white-space: pre-line; }
+.signature {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 23px;
+  color: #b53f68;
+}
+footer { padding-top: 20px; color: #b18b99; font-size: 12px; }
+.float {
+  position: fixed;
+  bottom: -30px;
+  pointer-events: none;
+  animation: rise 3s linear forwards;
+  z-index: 5;
+}
+@keyframes rise {
+  to { transform: translateY(-110vh) rotate(35deg); opacity: 0; }
+}
+@media (min-width: 450px) {
+  .card { padding: 34px; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>♡ A LITTLE SOMETHING FOR FAY ♡</header>
+  <div id="progressArea" hidden>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:#997786">
+      <span id="levelLabel">Level 1</span>
+      <span id="score">♡ 0 hearts</span>
+    </div>
+    <div class="progress"><div id="bar"></div></div>
+  </div>
+  <main><section class="card" id="game"></section></main>
+  <footer>Made with love by Clint 💗</footer>
+</div>
+
+<script>
+/* PERSONALIZE YOUR GAME HERE */
+const sender = "Clint";
+
+const questions = [
+  {
+    title: "What makes love special?",
+    answers: [
+      "Care, honesty and the little things",
+      "Who sends the most messages",
+      "Expensive gifts only"
+    ],
+    correct: 0,
+    message: "Exactly, Fay! The little things can mean the most. 💗"
+  },
+  {
+    title: "What's a lovely way to show someone you care?",
+    answers: [
+      "Expect them to read your mind",
+      "Listen, support them and show up",
+      "Only remember special occasions"
+    ],
+    correct: 1,
+    message: "Yes! Love is something we show through our actions. 🌷"
+  },
+  {
+    title: "Choose your favourite kind of memory.",
+    answers: [
+      "Laughing together over something silly",
+      "Being on our phones the whole time",
+      "Competing over everything"
+    ],
+    correct: 0,
+    message: "The simplest moments can become the sweetest memories. ✨"
+  },
+  {
+    title: "What should always be part of a relationship?",
+    answers: [
+      "Pride and silence",
+      "Trust, respect and communication",
+      "Keeping score of every mistake"
+    ],
+    correct: 1,
+    message: "Beautiful answer. A caring relationship needs trust and respect. ❤️"
+  }
+];
+
+const memories = [
+  {
+    icon: "🌷",
+    title: "One thing I adore about you",
+    text: "Fay, there is something special about you that makes you stand out from everyone else.\n\nYour smile, your personality, and the little things that make you YOU are worth appreciating."
+  },
+  {
+    icon: "✨",
+    title: "A memory worth keeping",
+    text: "Some moments may seem small when they happen, but later they become the memories that make us smile.\n\nI look forward to making more beautiful memories with you."
+  },
+  {
+    icon: "🫶",
+    title: "A little promise",
+    text: "I want to keep learning about you, listening to you, encouraging you, and appreciating the person you are.\n\nI know love is more than words, and I want my actions to speak too."
+  }
+];
+
+const finalLetter = `Dear Fay,
+
+I made this little game because I wanted to give you something different — a small reminder of how special you are to me.
+
+Thank you for being you. Thank you for the smiles, the conversations, and the memories we have made. There are still so many beautiful moments I hope we will share.
+
+I may not always find the perfect words, but I want you to know that you matter to me. I hope we keep growing, laughing, learning, and making memories together.
+
+If this game made you smile, then it has already done what I hoped it would do.
+
+And if you ever wonder how special you are to me, come back and read this little letter again.
+
+With all my affection,
+
+`;
+
+let hearts = 0;
+let questionIndex = 0;
+let memoryIndex = 0;
+let answered = false;
+let audioEnabled = false;
+
+const game = document.getElementById("game");
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[char]);
+}
+
+function updateProgress(level, percent) {
+  document.getElementById("progressArea").hidden = false;
+  document.getElementById("levelLabel").textContent = level;
+  document.getElementById("score").textContent =
+    `♡ ${hearts} ${hearts === 1 ? "heart" : "hearts"}`;
+  document.getElementById("bar").style.width = percent + "%";
+}
+
+function renderWelcome() {
+  document.getElementById("progressArea").hidden = true;
+  game.innerHTML = `
+    <div class="eyebrow">A little adventure for you</div>
+    <div class="heart">💗</div>
+    <h1>Hey, Fay!</h1>
+    <p class="subtitle">
+      Someone has made a little surprise just for you.
+      There are sweet messages, fun questions, and a letter waiting at the end.
+    </p>
+    <button class="primary" id="start">Open your surprise ♡</button>
+    <p style="font-size:12px;color:#b18b99">Take your time, sweetheart.</p>
+  `;
+  document.getElementById("start").onclick = () => {
+    questionIndex = 0;
+    renderQuiz();
+    confetti(7);
+  };
+}
+
+function renderQuiz() {
+  answered = false;
+  const q = questions[questionIndex];
+  updateProgress(`Level ${questionIndex + 1} of ${questions.length + 3}`,
+    questionIndex / (questions.length + 3) * 100);
+
+  game.innerHTML = `
+    <div class="stats">♡ ${hearts} hearts collected</div>
+    <p class="eyebrow">A little love quiz</p>
+    <h2>${escapeHTML(q.title)}</h2>
+    <p class="subtitle">Choose your answer, Fay 💕</p>
+    <div id="answers">
+      ${q.answers.map((answer, i) => `
+        <button class="choice" data-index="${i}">
+          <strong>${String.fromCharCode(65+i)}.</strong>
+          &nbsp;${escapeHTML(answer)}
+        </button>
+      `).join("")}
+    </div>
+    <p id="feedback">Choose the answer that feels right.</p>
+    <button class="primary" id="next" disabled>Continue ♡</button>
+  `;
+
+  document.querySelectorAll(".choice").forEach(button => {
+    button.onclick = () => {
+      if (answered) return;
+      answered = true;
+      const selected = Number(button.dataset.index);
+      const correct = selected === q.correct;
+
+      document.querySelectorAll(".choice").forEach((option, i) => {
+        option.disabled = true;
+        if (i === q.correct) option.classList.add("correct");
+        if (i === selected && !correct) option.classList.add("wrong");
+      });
+
+      if (correct) {
+        hearts++;
+        document.getElementById("feedback").textContent = q.message;
+        confetti(5);
+        if (audioEnabled) playChime();
+      } else {
+        document.getElementById("feedback").textContent =
+          "Nice try, Fay! Every answer brings us one step closer to your surprise. 💗";
+      }
+
+      document.querySelector(".stats").textContent =
+        `♡ ${hearts} hearts collected`;
+      document.getElementById("score").textContent =
+        `♡ ${hearts} ${hearts === 1 ? "heart" : "hearts"}`;
+      document.getElementById("next").disabled = false;
+    };
+  });
+
+  document.getElementById("next").onclick = () => {
+    questionIndex++;
+    if (questionIndex === 2) {
+      memoryIndex = 0;
+      renderMemory();
+    } else if (questionIndex < questions.length) {
+      renderQuiz();
+    } else {
+      memoryIndex = 1;
+      renderMemory();
+    }
+  };
+}
+
+function renderMemory() {
+  const m = memories[memoryIndex];
+  updateProgress("A message just for you", 65 + memoryIndex * 8);
+
+  game.innerHTML = `
+    <div class="stats">♡ ${hearts} hearts collected</div>
+    <div class="heart">${m.icon}</div>
+    <div class="eyebrow">A little note from Clint</div>
+    <h2>${escapeHTML(m.title)}</h2>
+    <p class="note">${escapeHTML(m.text)}</p>
+    <button class="primary" id="continue">
+      ${memoryIndex < 2 ? "Another little surprise ♡" : "Open your final letter 💌"}
+    </button>
+  `;
+
+  document.getElementById("continue").onclick = () => {
+    hearts++;
+    if (memoryIndex === 0) {
+      memoryIndex = 1;
+    } else if (memoryIndex === 1) {
+      memoryIndex = 2;
+    } else {
+      renderLetter();
+      confetti(20);
+      return;
+    }
+    renderMemory();
+    confetti(5);
+  };
+}
+
+function renderLetter() {
+  updateProgress("Your final surprise 💌", 100);
+
+  game.innerHTML = `
+    <div class="heart">💌</div>
+    <div class="eyebrow">You unlocked your surprise</div>
+    <h2>A letter for Fay</h2>
+    <p class="subtitle">A little message from my heart to yours.</p>
+    <div class="paper">
+      <h3 style="font-family:Georgia,serif;color:#a53c62">Dear Fay, ♡</h3>
+      <p>${escapeHTML(finalLetter)}</p>
+      <div class="signature">Yours, ${escapeHTML(sender)} 💗</div>
+    </div>
+    <button class="primary" id="again" style="margin-top:18px">
+      Play again ↻
+    </button>
+    <button class="secondary" id="share">Share the surprise ♡</button>
+  `;
+
+  document.getElementById("again").onclick = () => {
+    hearts = 0;
+    questionIndex = 0;
+    memoryIndex = 0;
+    renderWelcome();
+  };
+
+  document.getElementById("share").onclick = async () => {
+    const message = "Fay 💗 I made a romantic little game just for you!";
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "A little something for Fay 💗",
+          text: message,
+          url: location.href
+        });
+      } catch (e) {}
+    } else {
+      try {
+        await navigator.clipboard.writeText(location.href);
+        alert("Link copied! Send it to Fay on WhatsApp 💗");
+      } catch (e) {
+        alert("Copy the website link from your browser and send it to Fay 💗");
+      }
+    }
+  };
+}
+
+function confetti(amount = 8) {
+  const symbols = ["💗", "💕", "♡", "🌸", "💖"];
+  for (let i = 0; i < amount; i++) {
+    const el = document.createElement("span");
+    el.className = "float";
+    el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    el.style.left = Math.random() * 95 + "vw";
+    el.style.animationDelay = Math.random() * 0.5 + "s";
+    el.style.fontSize = 17 + Math.random() * 16 + "px";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+}
+
+function playChime() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+    oscillator.frequency.value = 740;
+    gain.gain.value = 0.04;
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + 0.15);
+    oscillator.onended = () => ctx.close();
+  } catch (e) {}
+}
+
+const soundButton = document.createElement("button");
+soundButton.textContent = "♫ Sound off";
+soundButton.className = "secondary";
+soundButton.style.width = "auto";
+soundButton.style.margin = "0 auto 15px";
+soundButton.style.padding = "8px 14px";
+soundButton.style.fontSize = "12px";
+document.querySelector("header").after(soundButton);
+
+soundButton.onclick = () => {
+  audioEnabled = !audioEnabled;
+  soundButton.textContent = audioEnabled ? "♫ Sound on" : "♫ Sound off";
+};
+
+renderWelcome();
+</script>
+</body>
+</html>
